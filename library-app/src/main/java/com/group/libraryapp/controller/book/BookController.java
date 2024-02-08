@@ -13,6 +13,7 @@ public class BookController {
         this.service = service;
     }
 
+    @GetMapping("/book")
     public void saveBook(){
         service.saveBook();
     }
