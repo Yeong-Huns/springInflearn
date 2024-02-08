@@ -3,7 +3,6 @@ package com.group.libraryapp.controller.user;
 import com.group.libraryapp.dto.user.request.UserCreateRequest;
 import com.group.libraryapp.dto.user.request.UserUpdateRequest;
 import com.group.libraryapp.dto.user.response.UserResponse;
-import org.springframework.http.RequestEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,12 +37,20 @@ public class UserController {
 
     @PutMapping("/user")
     public void updateUser(@RequestBody UserUpdateRequest request){
+        String readSql = "SELECT * FROM user WHERE id=?";
+        boolean isUserNotExist = jdbcTemplate.query(readSql, (rs, rowNum) -> 0, request.getId()).isEmpty();
+        //필드가 존재하지않는다면 Empty / 있으면 0이 반환된다.
+        if(isUserNotExist) {throw new IllegalArgumentException();}
         String sql = "UPDATE user SET name=? WHERE id=?";
         jdbcTemplate.update(sql, request.getName(), request.getId());
     }
 
     @DeleteMapping("/user")
     public void deleteUser(@RequestParam String name){
+        String readSql = "SELECT * FROM user WHERE name=?";
+        boolean isUserNotExist = jdbcTemplate.query(readSql, (rs, rowNum) -> 0, name).isEmpty();
+        //필드가 존재하지않는다면 Empty / 있으면 0이 반환된다.
+        if(isUserNotExist) {throw new IllegalArgumentException();}
         String sql = "DELETE FROM user WHERE name=?";
         jdbcTemplate.update(sql, name);
     }
