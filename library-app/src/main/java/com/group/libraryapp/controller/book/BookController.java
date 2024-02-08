@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BookController {
 
-    private final BookService service = new BookService();
+    private final BookService service;
+
+    public BookController(BookService service) {
+        this.service = service;
+    }
 
     public void saveBook(){
         service.saveBook();
