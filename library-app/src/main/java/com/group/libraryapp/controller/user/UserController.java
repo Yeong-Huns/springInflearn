@@ -4,7 +4,6 @@ import com.group.libraryapp.dto.user.request.UserCreateRequest;
 import com.group.libraryapp.dto.user.request.UserUpdateRequest;
 import com.group.libraryapp.dto.user.response.UserResponse;
 import com.group.libraryapp.service.user.UserService;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +12,8 @@ import java.util.List;
 public class UserController {
     private final UserService service;
     //생성자에 넣어두면 스프링이 알아서 넣어줌
-    public UserController(JdbcTemplate jdbcTemplate) {
-        this.service = new UserService(jdbcTemplate);
+    public UserController(UserService service) {
+        this.service = service;
     }
 
     @PostMapping("/user")
