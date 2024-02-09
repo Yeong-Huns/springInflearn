@@ -4,6 +4,8 @@ import com.group.libraryapp.dto.user.request.UserCreateRequest;
 import com.group.libraryapp.dto.user.request.UserUpdateRequest;
 import com.group.libraryapp.dto.user.response.UserResponse;
 import com.group.libraryapp.service.user.UserService;
+import com.group.libraryapp.service.user.UserServiceV1;
+import com.group.libraryapp.service.user.UserServiceV2;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +21,9 @@ public class UserController {
         this.service = service;
     }
     */
-    private final UserService service;
+    private final UserServiceV2 service;
     //생성자에 넣어두면 스프링이 알아서 넣어줌
-    public UserController(UserService service) {
+    public UserController(UserServiceV2 service) {
         this.service = service;
     }
 
