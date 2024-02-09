@@ -10,6 +10,15 @@ import java.util.List;
 
 @RestController
 public class UserController {
+    /*
+    @Autowired //@Autowired로 필드 직접주입
+    private UserService service;
+    @Autowired
+    public void setService(UserService service) {
+        //@Autowired와 setter를 사용
+        this.service = service;
+    }
+    */
     private final UserService service;
     //생성자에 넣어두면 스프링이 알아서 넣어줌
     public UserController(UserService service) {
