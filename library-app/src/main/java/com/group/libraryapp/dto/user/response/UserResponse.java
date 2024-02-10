@@ -1,10 +1,10 @@
 package com.group.libraryapp.dto.user.response;
 
-import com.group.libraryapp.domain.User;
+import com.group.libraryapp.domain.user.User;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
+@Getter
 public class UserResponse {
     private final long id;
     private final String name;
@@ -22,15 +22,4 @@ public class UserResponse {
         this.age = age;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
 }
