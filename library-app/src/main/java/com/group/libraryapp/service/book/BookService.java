@@ -8,6 +8,7 @@ import com.group.libraryapp.domain.user.loanHistory.UserLoanHistory;
 import com.group.libraryapp.domain.user.loanHistory.UserLoanHistoryRepository;
 import com.group.libraryapp.dto.book.request.BookCreateRequest;
 import com.group.libraryapp.dto.book.request.BookLoanRequest;
+import com.group.libraryapp.dto.book.request.BookReturnRequest;
 import com.group.libraryapp.dto.book.response.BookResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -57,5 +58,15 @@ public class BookService {
                 .orElseThrow(IllegalArgumentException::new);
         //5. 유저정보와 책 정보를 기반으로 UserLoanHistory 저장
         loanHistoryRepository.save(new UserLoanHistory(user.getId(), book.getName()));
+    }
+    @Transactional
+    public void returnBook(BookReturnRequest request){
+        User user = userRepository.findByName(request.getUserName())
+                .orElseThrow(IllegalArgumentException::new);
+        UserLoanHistory loanHistory =
+                loanHistoryRepository.findByBookNameAndUserId(request.getBookName(), user.getId())
+                        .orElseThrow(IllegalArgumentException::new);
+        loanHistory.doReturn();
+        //영속성 컨텍스트 : 변경사항 감지로 자동저장
     }
 }
