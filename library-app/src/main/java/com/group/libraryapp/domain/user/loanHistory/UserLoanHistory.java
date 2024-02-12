@@ -17,7 +17,6 @@ public class UserLoanHistory {
     private Long id;
 
     @ManyToOne
-    @Column(name= "User_id")
     private User user;
 
     @Column(name= "book_name")

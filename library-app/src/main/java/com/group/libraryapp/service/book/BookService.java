@@ -9,6 +9,7 @@ import com.group.libraryapp.domain.user.loanHistory.UserLoanHistoryRepository;
 import com.group.libraryapp.dto.book.request.BookCreateRequest;
 import com.group.libraryapp.dto.book.request.BookLoanRequest;
 import com.group.libraryapp.dto.book.request.BookReturnRequest;
+import com.group.libraryapp.dto.book.request.BookTestRequest;
 import com.group.libraryapp.dto.book.response.BookResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -68,5 +69,15 @@ public class BookService {
                         .orElseThrow(IllegalArgumentException::new);
         loanHistory.doReturn();
         //영속성 컨텍스트 : 변경사항 감지로 자동저장
+    }
+    @Transactional
+    public void deleteTest(BookTestRequest request){
+        User user = userRepository.findById(request.getId()).orElseThrow(IllegalArgumentException::new);
+        user.removeOneHistory(request.getBookName());
+    }
+    @Transactional
+    public void printList(long userId){
+        User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
+        user.printLoanHistories();
     }
 }

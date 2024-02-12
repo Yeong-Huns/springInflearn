@@ -20,10 +20,10 @@ public class User {
     @Column(name="age")
     private Integer age;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     //이 user가 삭제되면 연관된 userLoanHistory도 삭제(cascade)
     //객체간의 관계가 끊어진 데이터를 자동으로 제거하는 옵션 (orphanRemoval)
-    private List<UserLoanHistory> userLoanHistories = new ArrayList<>();
+    private final List<UserLoanHistory> userLoanHistories = new ArrayList<>();
 
     public User(Integer age, String name) {
         this.name = name;
@@ -33,4 +33,14 @@ public class User {
         this.name = name;
     }
 
+    public void printLoanHistories(){
+        System.out.println("===============================");
+        for (UserLoanHistory userLoanHistory : userLoanHistories)
+            System.out.print(userLoanHistory.getBookName() + " ");
+        System.out.println("===============================");
+        System.out.println("회원이름 : " + this.name);
+    }
+    public void removeOneHistory(String bookName){
+        userLoanHistories.removeIf(history->bookName.equals(history.getBookName()));
+    }
 }
