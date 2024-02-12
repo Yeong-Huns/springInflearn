@@ -20,7 +20,9 @@ public class User {
     @Column(name="age")
     private Integer age;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    //이 user가 삭제되면 연관된 userLoanHistory도 삭제(cascade)
+    //객체간의 관계가 끊어진 데이터를 자동으로 제거하는 옵션 (orphanRemoval)
     private List<UserLoanHistory> userLoanHistories = new ArrayList<>();
 
     public User(Integer age, String name) {
