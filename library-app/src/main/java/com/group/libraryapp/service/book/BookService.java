@@ -57,7 +57,7 @@ public class BookService {
         User user = userRepository.findByName(request.getUserName())
                 .orElseThrow(IllegalArgumentException::new);
         //5. 유저정보와 책 정보를 기반으로 UserLoanHistory 저장
-        loanHistoryRepository.save(new UserLoanHistory(user.getId(), book.getName()));
+        loanHistoryRepository.save(new UserLoanHistory(user, book.getName()));
     }
     @Transactional
     public void returnBook(BookReturnRequest request){

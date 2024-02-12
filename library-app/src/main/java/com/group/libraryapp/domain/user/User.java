@@ -1,8 +1,11 @@
 package com.group.libraryapp.domain.user;
 
+import com.group.libraryapp.domain.user.loanHistory.UserLoanHistory;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -16,6 +19,9 @@ public class User {
     private String name;
     @Column(name="age")
     private Integer age;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserLoanHistory> userLoanHistories = new ArrayList<>();
 
     public User(Integer age, String name) {
         this.name = name;
