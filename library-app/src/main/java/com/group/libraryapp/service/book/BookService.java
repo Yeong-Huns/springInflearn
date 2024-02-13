@@ -46,33 +46,30 @@ public class BookService {
     }
     @Transactional
     public void loanBook(BookLoanRequest request){
-        //1. 책 정보를 확인한다.
         Book book = repository.findByName(request.getBookName())
                 .orElseThrow(IllegalArgumentException::new);
-        //2. 대출기록 정보를 가져온다. (대출중인지 확인)
-        //3. 만약 확인해서 대출중이라면 오류코드 보낸다.
-        if(loanHistoryRepository.existsByBookNameAndIsReturn(book.getName(), false)) {
+        if(loanHistoryRepository.existsByBookNameAndIsReturn(book.getName(), false))
             throw new IllegalArgumentException("대출된 책입니다.");
-        }
-        //4. 유저정보를 가져온다.
         User user = userRepository.findByName(request.getUserName())
                 .orElseThrow(IllegalArgumentException::new);
+        user.loanBook(request.getBookName());
+        //1. 책 정보를 확인한다.
+        //2. 대출기록 정보를 가져온다. (대출중인지 확인)
+        //3. 만약 확인해서 대출중이라면 오류코드 보낸다.
+        //4. 유저정보를 가져온다.
         //5. 유저정보와 책 정보를 기반으로 UserLoanHistory 저장
-        loanHistoryRepository.save(new UserLoanHistory(user, book.getName()));
     }
     @Transactional
     public void returnBook(BookReturnRequest request){
         User user = userRepository.findByName(request.getUserName())
                 .orElseThrow(IllegalArgumentException::new);
-        UserLoanHistory loanHistory =
-                loanHistoryRepository.findByBookNameAndUserId(request.getBookName(), user.getId())
-                        .orElseThrow(IllegalArgumentException::new);
-        loanHistory.doReturn();
+        user.returnBook(request.getBookName());
         //영속성 컨텍스트 : 변경사항 감지로 자동저장
     }
     @Transactional
     public void deleteTest(BookTestRequest request){
-        User user = userRepository.findById(request.getId()).orElseThrow(IllegalArgumentException::new);
+        User user = userRepository.findById(request.getId())
+                .orElseThrow(IllegalArgumentException::new);
         user.removeOneHistory(request.getBookName());
     }
     @Transactional

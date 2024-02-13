@@ -21,9 +21,9 @@ public class User {
     private Integer age;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private final List<UserLoanHistory> userLoanHistories = new ArrayList<>();
     //이 user가 삭제되면 연관된 userLoanHistory도 삭제(cascade)
     //객체간의 관계가 끊어진 데이터를 자동으로 제거하는 옵션 (orphanRemoval)
-    private final List<UserLoanHistory> userLoanHistories = new ArrayList<>();
 
     public User(Integer age, String name) {
         this.name = name;
@@ -34,7 +34,6 @@ public class User {
     }
 
     public void printLoanHistories(){
-        System.out.println("===============================");
         for (UserLoanHistory userLoanHistory : userLoanHistories)
             System.out.print(userLoanHistory.getBookName() + " ");
         System.out.println("===============================");
@@ -42,5 +41,15 @@ public class User {
     }
     public void removeOneHistory(String bookName){
         userLoanHistories.removeIf(history->bookName.equals(history.getBookName()));
+    }
+    public void loanBook(String bookName){
+        this.userLoanHistories.add(new UserLoanHistory(this, bookName));
+    }
+    public void returnBook(String bookName){
+        UserLoanHistory target = this.userLoanHistories.stream()
+                .filter(history->bookName.equals(history.getBookName()))
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
+        target.doReturn();
     }
 }
