@@ -1,11 +1,10 @@
 package com.group.libraryapp.domain.user.loanHistory;
 
 import com.group.libraryapp.domain.user.User;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "user_loan_history")
